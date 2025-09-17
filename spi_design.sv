@@ -71,14 +71,14 @@ module spi_slave(
   logic [7:0] shift_reg;
   always_ff @(posedge clk or posedge rst) begin
     if (rst) begin
-      bit_cnt <= 0;
+      bit_cnt <= 7;
       shift_reg <= slave_data;
       spi.miso <= slave_data[7];
     end else if (~spi.cs && spi.sclk) begin
       shift_reg <= {shift_reg[6:0], 1'b0};
       spi.miso <= shift_reg[6];
       received_data[bit_cnt] <= spi.mosi;
-      bit_cnt <= bit_cnt + 1;
+      bit_cnt <= bit_cnt - 1;
     end
   end
 endmodule
